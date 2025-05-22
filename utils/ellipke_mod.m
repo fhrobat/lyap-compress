@@ -1,6 +1,6 @@
 function [k,e] = ellipke_mod(m,tol)
 %
-% Modified ellipke to accept as input sqrt(1-m^2) rather then m
+% Modified ellipke to accept as input sqrt(1-m) rather then m
 
 if nargin<1
   error(message('MATLAB:ellipke:NotEnoughInputs')); 
@@ -23,7 +23,7 @@ end
 a0 = 1;
 b0 = m;
 c0 = NaN;
-s0 = m;
+s0 = 1-m^2;
 i1 = 0; mm = Inf;
 while mm > tol
     a1 = (a0+b0)/2;

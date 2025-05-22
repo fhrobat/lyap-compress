@@ -1,6 +1,6 @@
 function [sn,cn,dn] = ellipj_mod(u,m,tol)
 %
-% Modified ellipj to accept as input sqrt(1-m^2) rather then m
+% Modified ellipj to accept as input sqrt(1-m) rather then m
 
 
 if nargin<2
