@@ -2,7 +2,7 @@
 
 Contains the MATLAB code for the memory-efficient computation of the solution of the Lyapunov equation
 
-$AX + XA = cc^T$
+<p align="center"> $AX + XA = cc^T$ </p>
 	
 where $A$ is a symmetric positive definite real matrix and $c$ is a real vector. The algorithm is presented in [1].
 
