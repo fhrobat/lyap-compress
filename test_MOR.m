@@ -13,7 +13,7 @@ addpath(genpath('./'))
 
 % generate function handle mult and right-hand side (options is empty)
 name = "mor";
-[mult,c,options] = prepare_matrices(name, j);
+[mult,~,c,options] = prepare_matrices(name, j);
 disp(name)
 disp(j)
 
@@ -31,7 +31,7 @@ result_compress.time = toc;
 % true residual norm for compress
 [~, Rsx] = qr([mult(U) * X,  U, c], 'econ');
 [~, Rdx] = qr([U, mult(U) * X, -c], 'econ');
-result_compress.true_res = norm(Rsx * Rdx', 'fro')/norm(c)^2
+result_compress.true_res = norm(Rsx * Rdx', 'fro')/norm(c)^2;
 
 % two-pass
 tic
@@ -41,7 +41,7 @@ result_two_pass.time = toc;
 % true residual norm for two-pass
 [~, Rsx] = qr([mult(U) * X,  U, c], 'econ');
 [~, Rdx] = qr([U, mult(U) * X, -c], 'econ');
-result_two_pass.true_res = norm(Rsx * Rdx', 'fro')/norm(c)^2
+result_two_pass.true_res = norm(Rsx * Rdx', 'fro')/norm(c)^2;
 
 % restart
 A = [];
@@ -74,6 +74,10 @@ end
 result_rest = param;
 
 % append results
-results{end+1} = {size(c,1), result_compress, result_two_pass, result_rest};
-
+res.name = "MOR";
+res.size = j;
+res.compress =  result_compress;
+res.two_pass =  result_two_pass;
+res.rest =  result_rest;
+results{end+1} = res;
 end

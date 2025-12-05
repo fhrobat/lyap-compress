@@ -1,6 +1,6 @@
 function xi = poles_asymptotic(a,b, tol)
 %
-% Function to compute Zolotarev poles using asymptotic expansions 
+% Function to compute Zolotarev poles using asymptotic expansions
 % 
 % Inputs:
 %   a,b         the Zolotarev function associated to the poles will be defined over [-b,-a], [a,b] and the poles will belong to [-b,-a]
@@ -24,8 +24,8 @@ for ii = 1:m_zol
    preccosh = vpa(subs(cosh(x), t), 32);
    precsinh = vpa(subs(sinh(x), 2*t), 32);
    expo = vpa(subs(exp(2*x)/128, t), 32);
-   sn = vpa(subs(prectanh + (x^2)/2 * 1/(preccosh^2) * (1/8 * precsinh - 1/4 *t) + (x^2)/8 - (x^4)/4 * expo,kp),32);
-   dn = vpa(subs(sqrt(1-x), (1-kp^2/2) * sn^2), 32);
+   sn = vpa(subs(prectanh + (x^2) * 1/(preccosh^2) * (1/8 * precsinh - 1/4 *t) + (x^2)/4 - (x^4) * expo,kp/2),32);
+   dn = vpa(subs(sqrt(1-x), (1-kp^2) * sn^2), 32);
    xi(ii) = vpa(subs(-x*dn, b), 32);
    xi(ii) = double(real(xi(ii)));
    if xi(ii) > -a

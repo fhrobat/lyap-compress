@@ -6,7 +6,7 @@ function [U, X, result] = lyap_compress(A,c,options)
 % The approximate solution is returned in a factorized form, i.e. U*X*U'
 
 %Inputs: 
-%   A                   real symmetric sparse matrix of size n x n or a function that handles matrix-vector product with A
+%   A                   real symmetric positive definite sparse matrix of size n x n or a function that handles matrix-vector product with A
 %   c                   real vector of size n
 %   options.tol         relative tolerance on the residual norm
 %   options.xi          poles for the rational Krylov subspace (optional)
@@ -47,25 +47,27 @@ elseif isfield(options, 'xi') == 0 && (isfield(options, 'eigmin') == 0 || isfiel
     % if the poles are not provided and at leat one of the extreme eigevalues are not
     % provided, the first pass is performed employing full orthogonalization to estimate the eigenvalues
     flag = 1;
-    if isfield(options, 'eigmin') == 1
+    if isfield(options, 'eigmax') == 1
         [Q, v1, v2, H] = full_orth_Arnoldi(mult, options.maxmem-1, c/normc);
         alpha = diag(H);
         beta = diag(H,-1);
         options.eigmin = eigs(spdiags([[beta(1:end-1);0],alpha,[0;beta(1:end-1)]], [-1,0,1], length(alpha), length(alpha)), 1, 'smallestabs');
-    elseif isfield(options, 'eigmax') == 1
+        options.eigmin = options.eigmin /10;
+    elseif isfield(options, 'eigmin') == 1
         [Q, v1, v2, H] = full_orth_Arnoldi(mult, options.maxmem-1, c/normc);
         alpha = diag(H);
         beta = diag(H,-1);
         options.eigmax = eigs(spdiags([[beta(1:end-1);0],alpha,[0;beta(1:end-1)]], [-1,0,1], length(alpha), length(alpha)), 1, 'largestabs');
+        options.eigmax = options.eigmax * 1.1;
     else
         [Q, v1, v2, H] = full_orth_Arnoldi(mult, options.maxmem-1, c/normc);
         alpha = diag(H);
         beta = diag(H,-1);
         options.eigmin = eigs(spdiags([[beta(1:end-1);0],alpha,[0;beta(1:end-1)]], [-1,0,1], length(alpha), length(alpha)), 1, 'smallestabs');
         options.eigmax = eigs(spdiags([[beta(1:end-1);0],alpha,[0;beta(1:end-1)]], [-1,0,1], length(alpha), length(alpha)), 1, 'largestabs');
+        options.eigmin = options.eigmin /10;
+        options.eigmax = options.eigmax * 1.1;
     end
-    options.eigmin = options.eigmin /10;
-    options.eigmax = options.eigmax * 1.1;
     c0 = options.eigmax/options.eigmin;
     options.xi = poles_Zolotarev(options.eigmin, options.eigmax, options.tol/(c0 * 2));
 elseif isfield(options, 'xi') == 0
@@ -78,7 +80,7 @@ if isfield(options, 'true_res') == 0
 end
 
 k = length(options.xi);
-if options.maxmem < 2*k
+if options.maxmem <= 2*k
     error("The variable maxmem is too low to achieve the requested accuracy, please provide maxmem which is at least %d \n", 2*k+1)
 elseif options.maxmem < (3*k-1) % if compression is too frequent, compress algorithm may suffer
     warning("Compression is performed every %d Lanczos iterations, please consider increasing maxmem \n", options.maxmem - 2*k-1)

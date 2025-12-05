@@ -1,4 +1,4 @@
-function [mult,c,options] = prepare_matrices(name, k)
+function [mult,M,c,options] = prepare_matrices(name, k)
 %
 % Function to prepare coefficient matrix, right-hand side and options (if
 % needed)
@@ -18,6 +18,7 @@ if name == "4DLap"
     c = kron(c,c);
     options.eigmin = (k+1)^2 * (4 - 4 * cos(pi / (k+1)));
     options.eigmax = (k+1)^2 * (4 - 4 * cos(k * pi/ (k+1)));
+    M=A;
 
 % prepare matrices for Example 2
 elseif name == "rail"
@@ -34,6 +35,7 @@ elseif name == "rail"
     L = R';
     mult = @(v) -L\(A*((L')\v));
     c = - L\B(:,1);
+    M = {L,A};
 
 % prepare matrices for Example 3
 elseif name == "mor"
@@ -52,7 +54,7 @@ elseif name == "mor"
     A = (A + A')/2;
     mult = @(v) A * v;
     c = - L\B(:,1);
-
+    M = [];
 end
 
 
