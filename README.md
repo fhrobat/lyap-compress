@@ -14,7 +14,7 @@ This repository additonally contains the MATLAB code to reproduce the numerical 
 
 ```test_4DLap.m```: first experiment, 6D Laplacian
 
-```test_fenics_Rail.m```: FEniCS rail example (heat diffusion in 2D)
+```test_fenics_rail.m```: FEniCS rail example (heat diffusion in 2D)
 
 ```test_heat.m```: Heat diffusion in a steel bracket (heat diffusion in 3D)
 
