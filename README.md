@@ -12,9 +12,11 @@ This repository additonally contains the MATLAB code to reproduce the numerical 
 
 ```test_4DLap.m```: first experiment, 4D Laplacian
 
-```test_Fenics_Rail.m```: Model order reduction: example 1 (FEniCS_Rail)
+```test_4DLap.m```: first experiment, 6D Laplacian
 
-```test_MOR.m```: Model order reduction: example 2
+```test_fenics_Rail.m```: FEniCS rail example (heat diffusion in 2D)
+
+```test_heat.m```: Heat diffusion in a steel bracket (heat diffusion in 3D)
 
 Some functions required to run the methods we compare against our method are contained in the ```comparison``` folder; these methods rely on helper functions contained in the ```utils``` folder.
 
