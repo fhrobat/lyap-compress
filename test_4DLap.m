@@ -353,6 +353,7 @@ row.matvecs   =  param.matvecs;
 row.true_res  = param.true_res;
 row.num_poles = param.Acount/2;
 T = [T; row];
+clear param;
 %%%
 %%
 
