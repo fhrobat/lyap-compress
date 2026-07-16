@@ -34,7 +34,7 @@ n = size(A,1);
 % right-hand side after transformation
 vec = L\c;
 
-[Q, v1, v2, H] = full_orth_Arnoldi(mult, options.maxmem-1, vec/norm(vec));
+[~, v1, v2, H] = full_orth_Arnoldi(mult, options.maxmem-1, vec/norm(vec));
 alpha = diag(H);
 beta = diag(H,-1);
 options.eigmin = eigs(spdiags([[beta(1:end-1);0],alpha,[0;beta(1:end-1)]], [-1,0,1], length(alpha), length(alpha)), 1, 'smallestabs');
