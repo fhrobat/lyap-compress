@@ -1,0 +1,31 @@
+[2026-11-10 11:41:33] start test_2DLap_size1
+[2026-11-10 11:47:52] end   test_2DLap_size1 (exit status 0)
+[2026-11-10 11:47:52] start test_2DLap_size2
+[2026-11-10 11:52:21] end   test_2DLap_size2 (exit status 0)
+[2026-11-10 11:52:21] start test_2DLap_size3
+[2026-11-10 12:06:10] end   test_2DLap_size3 (exit status 0)
+[2026-11-10 12:06:10] start test_2DLap_size4
+[2026-11-10 12:47:49] end   test_2DLap_size4 (exit status 0)
+[2026-11-10 12:47:49] start test_2DLap_sensitivity
+[2026-11-10 12:48:38] end   test_2DLap_sensitivity (exit status 0)
+[2026-11-10 12:48:38] start test_3DLap_size1
+[2026-11-10 12:50:02] end   test_3DLap_size1 (exit status 0)
+[2026-11-10 12:50:02] start test_3DLap_size2
+[2026-11-10 12:52:47] end   test_3DLap_size2 (exit status 0)
+[2026-11-10 12:52:47] start test_3DLap_size3
+[2026-11-10 13:00:13] end   test_3DLap_size3 (exit status 0)
+[2026-11-10 13:00:13] start test_3DLap_size4
+[2026-11-10 13:08:29] end   test_3DLap_size4 (exit status 0)
+[2026-11-10 13:08:29] start test_fenics_rail_size1
+[2026-11-10 13:09:07] end   test_fenics_rail_size1 (exit status 0)
+[2026-11-10 13:09:07] start test_fenics_rail_size2
+[2026-11-10 13:11:59] end   test_fenics_rail_size2 (exit status 0)
+[2026-11-10 13:11:59] start test_fenics_rail_size3
+[2026-11-10 13:24:46] end   test_fenics_rail_size3 (exit status 0)
+[2026-11-10 13:24:46] start test_heat_size1
+[2026-11-10 13:26:51] end   test_heat_size1 (exit status 0)
+[2026-11-10 13:26:51] start test_heat_size2
+[2026-11-10 13:32:31] end   test_heat_size2 (exit status 0)
+[2026-11-10 13:32:31] start test_heat_size3
+[2026-11-10 13:56:42] end   test_heat_size3 (exit status 0)
+[2026-11-10 13:56:53] all experiments finished, see results/popeye_2026-11-10/summary.md

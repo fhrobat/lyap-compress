@@ -1,0 +1,16 @@
+script,size,status,seconds
+test_2DLap,1,0,379
+test_2DLap,2,0,269
+test_2DLap,3,0,829
+test_2DLap,4,0,2499
+test_2DLap_sensitivity,all,0,49
+test_3DLap,1,0,84
+test_3DLap,2,0,165
+test_3DLap,3,0,446
+test_3DLap,4,0,496
+test_fenics_rail,1,0,38
+test_fenics_rail,2,0,172
+test_fenics_rail,3,0,767
+test_heat,1,0,125
+test_heat,2,0,340
+test_heat,3,0,1451

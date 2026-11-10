@@ -41,6 +41,8 @@ MATLAB=matlab NTHREADS=4 MEMLIMIT=12G ./run_all.sh
 * ```raw/```: the results saved by the test scripts after every method;
 * ```logs/```, ```jobs.csv```, ```machine.txt```: MATLAB output, exit status and duration of every run, machine and MATLAB version.
 
+The results reported in the paper are in ```results/popeye_2026-11-10/``` (MATLAB R2026a, Intel Core i5-11500T, 4 threads, ```MEMLIMIT=12G```); see ```summary.md``` there.
+
 A single size of an experiment can be run from MATLAB with, e.g., ```setup_paths; size_idx = 2; test_2DLap```.
 For two-pass, the reported number of matrix-vector products includes both passes.
 

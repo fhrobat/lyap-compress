@@ -1,0 +1,105 @@
+Sensitivity experiment for 4D Laplacian of dimension 179776
+Compression is performed every 49 Lanczos iterations 
+Compression is performed every 49 Lanczos iterations 
+    i       variant        num_poles    matvecs     true_res 
+    _    ______________    _________    _______    __________
+
+    1    "recomputed_k"       35          658      5.3334e-07
+    1    "fixed_k"            35          658      5.3334e-07
+
+Compression is performed every 55 Lanczos iterations 
+Compression is performed every 49 Lanczos iterations 
+    i       variant        num_poles    matvecs     true_res 
+    _    ______________    _________    _______    __________
+
+    2    "recomputed_k"       32          669      3.1198e-07
+    2    "fixed_k"            35          658      5.3334e-07
+
+Compression is performed every 57 Lanczos iterations 
+Compression is performed every 49 Lanczos iterations 
+    i       variant        num_poles    matvecs     true_res 
+    _    ______________    _________    _______    __________
+
+    3    "recomputed_k"       31          689      1.0911e-07
+    3    "fixed_k"            35          658      5.3334e-07
+
+Compression is performed every 59 Lanczos iterations 
+Compression is performed every 49 Lanczos iterations 
+    i       variant        num_poles    matvecs     true_res 
+    _    ______________    _________    _______    __________
+
+    4    "recomputed_k"       30          709      4.1592e-08
+    4    "fixed_k"            35          658      5.3333e-07
+
+Compression is performed every 61 Lanczos iterations 
+Compression is performed every 49 Lanczos iterations 
+    i       variant        num_poles    matvecs     true_res 
+    _    ______________    _________    _______    __________
+
+    5    "recomputed_k"       29          668      5.1211e-07
+    5    "fixed_k"            35          658      5.3331e-07
+
+Compression is performed every 63 Lanczos iterations 
+Compression is performed every 49 Lanczos iterations 
+    i       variant        num_poles    matvecs     true_res 
+    _    ______________    _________    _______    __________
+
+    6    "recomputed_k"       28          686      2.7237e-06
+    6    "fixed_k"            35          658      5.3324e-07
+
+Compression is performed every 63 Lanczos iterations 
+Compression is performed every 49 Lanczos iterations 
+    i       variant        num_poles    matvecs     true_res 
+    _    ______________    _________    _______    __________
+
+    7    "recomputed_k"       28          686      8.3878e-06
+    7    "fixed_k"            35          658       5.336e-07
+
+Compression is performed every 65 Lanczos iterations 
+Compression is performed every 49 Lanczos iterations 
+    i       variant        num_poles    matvecs     true_res 
+    _    ______________    _________    _______    __________
+
+    8    "recomputed_k"       27          704      6.3021e-05
+    8    "fixed_k"            35          658      5.4118e-07
+
+Compression is performed every 65 Lanczos iterations 
+Compression is performed every 49 Lanczos iterations 
+    i       variant        num_poles    matvecs     true_res 
+    _    ______________    _________    _______    __________
+
+    9    "recomputed_k"       27          704      0.00014463
+    9    "fixed_k"            35          658       5.904e-07
+
+Compression is performed every 67 Lanczos iterations 
+Compression is performed every 49 Lanczos iterations 
+    i        variant        num_poles    matvecs     true_res 
+    __    ______________    _________    _______    __________
+
+    10    "recomputed_k"       26          655      0.00035802
+    10    "fixed_k"            35          658      7.8636e-07
+
+    i        variant        num_poles    matvecs     true_res 
+    __    ______________    _________    _______    __________
+
+     1    "recomputed_k"       35          658      5.3334e-07
+     1    "fixed_k"            35          658      5.3334e-07
+     2    "recomputed_k"       32          669      3.1198e-07
+     2    "fixed_k"            35          658      5.3334e-07
+     3    "recomputed_k"       31          689      1.0911e-07
+     3    "fixed_k"            35          658      5.3334e-07
+     4    "recomputed_k"       30          709      4.1592e-08
+     4    "fixed_k"            35          658      5.3333e-07
+     5    "recomputed_k"       29          668      5.1211e-07
+     5    "fixed_k"            35          658      5.3331e-07
+     6    "recomputed_k"       28          686      2.7237e-06
+     6    "fixed_k"            35          658      5.3324e-07
+     7    "recomputed_k"       28          686      8.3878e-06
+     7    "fixed_k"            35          658       5.336e-07
+     8    "recomputed_k"       27          704      6.3021e-05
+     8    "fixed_k"            35          658      5.4118e-07
+     9    "recomputed_k"       27          704      0.00014463
+     9    "fixed_k"            35          658       5.904e-07
+    10    "recomputed_k"       26          655      0.00035802
+    10    "fixed_k"            35          658      7.8636e-07
+

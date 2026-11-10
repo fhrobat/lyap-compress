@@ -1,0 +1,31 @@
+Experiments for 4D Laplacian of dimension 1440000
+[Warning: Compression is performed every 31 Lanczos iterations, please consider
+increasing maxmem
+] 
+[> In lyap_compress (line 84)
+In test_4DLap (line 60)] 
+Residual norm is checked every 31 Lanczos iterations 
+[Warning: Tolerance may not be achievable. Use a larger tolerance.] 
+[> In pcg (line 241)
+In lyap_ratkrylov_cycle (line 74)
+In test_4DLap (line 169)] 
+[Warning: Tolerance may not be achievable. Use a larger tolerance.] 
+[> In pcg (line 241)
+In lyap_ratkrylov_adaptive (line 94)
+In test_4DLap (line 205)] 
+       N               method            time     matvecs     true_res     num_poles
+    ________    ____________________    ______    _______    __________    _________
+
+    1.44e+06    "compress"              62.908      1886     5.8735e-07       44    
+    1.44e+06    "two-pass"              72.422      3772     5.8736e-07       44    
+    1.44e+06    "cycle_direct"          21.534         0     2.5269e-07       24    
+    1.44e+06    "cycle_plain"            340.5     19039      2.527e-07       24    
+    1.44e+06    "cycle_ichol"           155.74      1328     2.5268e-07       24    
+    1.44e+06    "adaptive_direct"       48.778         0     8.5259e-07       18    
+    1.44e+06    "adaptive_plain"        263.08     14897     8.5259e-07       18    
+    1.44e+06    "adaptive_ichol"        121.31      1029     8.5259e-07       18    
+    1.44e+06    "multishiftCG"          301.57      2087       1.29e-08       44    
+    1.44e+06    "multishiftCG_rem"      128.42      2087     1.4783e-08       44    
+    1.44e+06    "extended-icholPCG"     878.18      8282     7.1106e-07       76    
+    1.44e+06    "extended-backslash"    52.504        36     9.1215e-07       72    
+

@@ -1,0 +1,14 @@
+Compression is performed every 49 Lanczos iterations 
+Residual norm is checked every 49 Lanczos iterations 
+        N                method             time     matvecs     true_res     num_poles
+    _________    ______________________    ______    _______    __________    _________
+
+    1.461e+05    "compress"                2.5315      413      2.1594e-07       35    
+    1.461e+05    "two-pass"                4.1247      826      2.1594e-07       35    
+    1.461e+05    "cycle_plain_4_poles"     17.256     5140      3.4529e-07       24    
+    1.461e+05    "cycle_ichol_4_poles"     11.349      503      3.4529e-07       24    
+    1.461e+05    "cycle_plain_8_poles"     17.497     5201      3.5443e-08       24    
+    1.461e+05    "cycle_ichol_8_poles"     12.116      514      3.5443e-08       24    
+    1.461e+05    "cycle_plain_12_poles"    17.402     5179      2.6104e-08       24    
+    1.461e+05    "cycle_ichol_12_poles"    12.739      513      2.6104e-08       24    
+

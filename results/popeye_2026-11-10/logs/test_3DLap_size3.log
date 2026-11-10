@@ -1,0 +1,23 @@
+Experiments for 6D Laplacian of dimension 704969
+Compression is performed every 45 Lanczos iterations 
+Residual norm is checked every 45 Lanczos iterations 
+[Warning: Tolerance may not be achievable. Use a larger tolerance.] 
+[> In pcg (line 241)
+In lyap_ratkrylov_cycle (line 74)
+In test_6DLap (line 176)] 
+[Warning: Tolerance may not be achievable. Use a larger tolerance.] 
+[> In pcg (line 241)
+In lyap_ratkrylov_adaptive (line 94)
+In test_6DLap (line 212)] 
+        N               method            time     matvecs     true_res     num_poles
+    __________    ___________________    ______    _______    __________    _________
+
+    7.0497e+05    "compress"               3.73      299      8.2135e-13       37    
+    7.0497e+05    "two-pass"             5.7012      598      2.4002e-13       37    
+    7.0497e+05    "cycle_plain"          41.116     3687      5.1406e-13       28    
+    7.0497e+05    "cycle_ichol"          56.215      618       1.696e-13       28    
+    7.0497e+05    "adaptive_plain"       31.489     2835      7.4335e-13       23    
+    7.0497e+05    "adaptive_ichol"       50.124      483      3.4152e-13       23    
+    7.0497e+05    "extended-plainCG"     92.209     8998      1.3124e-12       54    
+    7.0497e+05    "extended-icholPCG"    142.58     1711       1.152e-12       54    
+

@@ -1,0 +1,8 @@
+date:      2026-11-10 11:41:21
+host:      popeye.maths.ox.ac.uk
+cpu:       11th Gen Intel(R) Core(TM) i5-11500T @ 1.50GHz
+cores:     12
+memory:    14 GB
+threads:   4 (maxNumCompThreads)
+mem limit: 12G
+matlab:    26.1.0.3276743 (R2026a) Update 3

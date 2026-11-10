@@ -1,0 +1,20 @@
+Experiments for 4D Laplacian of dimension 179776
+Compression is performed every 49 Lanczos iterations 
+Residual norm is checked every 49 Lanczos iterations 
+        N                method            time     matvecs     true_res     num_poles
+    __________    ____________________    ______    _______    __________    _________
+
+    1.7978e+05    "compress"              1.9139      658      5.3334e-07        35   
+    1.7978e+05    "two-pass"               2.397     1316      5.3334e-07        35   
+    1.7978e+05    "restart"               277.72     7867      9.8511e-07       NaN   
+    1.7978e+05    "cycle_direct"          1.9466        0      1.6318e-07        20   
+    1.7978e+05    "cycle_plain"            9.955     6487      1.6319e-07        20   
+    1.7978e+05    "cycle_ichol"           7.1427      504      1.6317e-07        20   
+    1.7978e+05    "adaptive_direct"       3.4551        0      7.6808e-07        15   
+    1.7978e+05    "adaptive_plain"        7.6907     4994      7.6808e-07        15   
+    1.7978e+05    "adaptive_ichol"        5.5761      377      7.6808e-07        15   
+    1.7978e+05    "multishiftCG"          9.9082      729      1.2689e-08        35   
+    1.7978e+05    "multishiftCG_rem"      4.7893      729      1.4714e-08        35   
+    1.7978e+05    "extended-icholPCG"     29.218     2035      7.5501e-07        48   
+    1.7978e+05    "extended-backslash"    3.0622       23      5.8293e-07        46   
+
