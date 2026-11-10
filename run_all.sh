@@ -59,8 +59,27 @@ for job in $JOBS; do
         if [ "$i" = "all" ]; then cmd="$t"; log="$t"; else cmd="size_idx = $i; $t"; log="${t}_size$i"; fi
         echo "[$(date '+%F %T')] start $log"
         start=$(date +%s)
-        "${PREFIX[@]}" "$MATLAB" -batch "maxNumCompThreads($NTHREADS); $cmd" > "$OUT_DIR/logs/$log.log" 2>&1
+        unit="lyap-$log-$$.scope"
+        if [ -n "$MEMLIMIT" ]; then
+            "${PREFIX[@]}" --unit="$unit" "$MATLAB" -batch "maxNumCompThreads($NTHREADS); $cmd" > "$OUT_DIR/logs/$log.log" 2>&1
+        else
+            "$MATLAB" -batch "maxNumCompThreads($NTHREADS); $cmd" > "$OUT_DIR/logs/$log.log" 2>&1
+        fi
         status=$?
+        # a run killed for exceeding MEMLIMIT does not always return exit
+        # status 137, so the result of its systemd unit is checked as well
+        if [ -n "$MEMLIMIT" ]; then
+            for _ in $(seq 1 20); do   # wait until systemd has stopped the unit
+                case "$(systemctl --user show -p ActiveState --value "$unit" 2>/dev/null)" in
+                    active|deactivating) sleep 0.5 ;;
+                    *) break ;;
+                esac
+            done
+            if [ "$(systemctl --user show -p Result --value "$unit" 2>/dev/null)" = "oom-kill" ]; then
+                status=137
+            fi
+            systemctl --user reset-failed "$unit" 2>/dev/null
+        fi
         echo "$t,$i,$status,$(( $(date +%s) - start ))" >> "$OUT_DIR/jobs.csv"
         echo "[$(date '+%F %T')] end   $log (exit status $status)"
     done
