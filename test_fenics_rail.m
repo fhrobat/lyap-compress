@@ -4,17 +4,30 @@
 % symmetric Lyapunov equation A*X*E' + E*X*A' = -c*c' for FEniCS_Rail benchmark.
 %%
 
-T = table();
+% set paths and folder for the results
+root = setup_paths();
+results_dir = get_results_dir(root);
 
 % we vary the max size of the mesh <-> vary size of A and E
-for j = [79841, 317377, 1265537]
+% sizes of the experiment; to run only some of them, set size_idx before
+% calling the script (e.g. size_idx = 2; test_fenics_rail)
+sizes = [79841, 317377, 1265537];
+if ~exist('size_idx', 'var'), size_idx = 1:numel(sizes); end
 
-addpath(genpath('./'))
+for idx = size_idx
+j = sizes(idx);
+
+% table that contains the results for this size (saved after every method)
+T = table();
+res_name = sprintf('test_fenics_rail_size%d', idx);
+
+% options are reset for every size N
+options = [];
 
 %generate A,E,L
 % mult = @(v) -L\(A*((L')\v)) refers to the transformed Lyapunov
 
-load('./matrices/rail_' + string(j)  + '.mat');
+load(fullfile(root, 'matrices', sprintf('rail_%d.mat', j)), 'A', 'E', 'C');
 
 % A is negative definite
 E = spdiags(sum(E, 2),0,j,j); 
@@ -25,7 +38,6 @@ c = C(1,:)';
 tol = 1e-4;
 options.maxmem = 120;
 options.tol = tol;
-options.true_res = 0;
 
 
 
@@ -66,6 +78,7 @@ row.matvecs   = result_compress.iter;
 row.true_res  = result_compress.true_res;
 row.num_poles = result_compress.k;
 T = [T; row];
+save_results(T, results_dir, res_name);
 clear V;
 %%
 
@@ -89,10 +102,11 @@ row = table();
 row.N         = n;
 row.method    = "two-pass";
 row.time      = result_two_pass.time;
-row.matvecs   = result_two_pass.iter;
+row.matvecs   = 2*result_two_pass.iter; % first and second pass
 row.true_res  = result_two_pass.true_res;
 row.num_poles = result_two_pass.k;
 T = [T; row];
+save_results(T, results_dir, res_name);
 clear V;
 %%
 
@@ -105,6 +119,7 @@ for num = [4,8,12]
 xi = poles_ellipke(options.eigmin, options.eigmax, [], num);
 
 for solver = ["plain", "ichol"]
+if num == 12 && solver == "plain" && idx == 3, continue; end % too slow
 options.precond = solver;
 options.maxit = 10000;
 options.tol_solver = 1e-8;
@@ -131,11 +146,16 @@ row.matvecs   =  matvecs;
 row.true_res  = res_cycle;
 row.num_poles = n_poles;
 T = [T; row];
+save_results(T, results_dir, res_name);
 clear V;
 end
 
 end
 
 %%
+
+
+% results for this size
+disp(T);
 
 end

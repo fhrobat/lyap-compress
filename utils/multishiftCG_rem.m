@@ -4,7 +4,7 @@ function [xfinal, it] = multishiftCG_rem(A, b, xi, tol, maxit, min_idx_converged
 	% See [1, Algorithm 5] and [2, Section 5.3] for details
 	%
 	% [1] A. Frommer, P. Maass, Fast CG-based methods for Tikhonov-Phillips regularization, SIAM J. Sci. Comput., 1999
-	% [2] J. van den Eshof, A. Frommer, T. Lippert, K. Schilling, H. van der Vorst, Numerical methods for the QCDd 
+	% [2] J. van den Eshof, A. Frommer, T. Lippert, K. Schilling, H. van der Vorst, Numerical methods for the QCD 
 	%     overlap operator. I. Sign-function and error bounds, Computer Physics Communications, 2002
 	%
 	% Input:

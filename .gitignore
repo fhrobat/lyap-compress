@@ -1,0 +1,4 @@
+results/
+external/
+matrices/*.mat
+.DS_Store

@@ -54,7 +54,6 @@ function [V, Y, shifts, matvecs] = lyap_ratkrylov_adaptive(A, E, L, c, m_max, op
 
 
     for m = 1:m_max
-        Vm = V(:,1:m);
 
         % Append one column/row to T_{m-1} to obtain T_m.
 
@@ -122,13 +121,15 @@ function [V, Y, shifts, matvecs] = lyap_ratkrylov_adaptive(A, E, L, c, m_max, op
 
         A_v_next = L \ (A * (L' \ V(:, m+1)));
         
+        % copy of the current basis, used only for the projections below
+        Vm = V(:,1:m);
         v_proj = Vm' * A_v_next;
        
 
         % next column of T_m
         t_col = [v_proj; V(:,m+1)' * A_v_next];
 
-        % redisual estimation
+        % residual estimation
         e_m_col = zeros(m, 1);
         e_m_col(m) = 1;
 
@@ -136,6 +137,7 @@ function [V, Y, shifts, matvecs] = lyap_ratkrylov_adaptive(A, E, L, c, m_max, op
         z_m = Y * (H(1:m, 1:m)' \ e_m_col);
         u1  = Vm * z_m * H(m+1, m);
         g = A_v_next - Vm * v_proj;
+        clear Vm;
         u2 = V(:, m+1) * s_next - g;
         [~, S_qr] = qr([u1, u2], 0);
         J = [0, 1; 1, 0]; 

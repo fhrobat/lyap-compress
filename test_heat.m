@@ -7,17 +7,29 @@
 % E is diagonalized via row-sum lumping.
 %%
 
-T = table();
+% set paths and folder for the results
+root = setup_paths();
+results_dir = get_results_dir(root);
 
 % we vary the max size of the mesh <-> vary size of A and E
-for Hmax = [2,1.5,1]
+% sizes of the experiment; to run only some of them, set size_idx before
+% calling the script (e.g. size_idx = 2; test_heat)
+sizes = [2, 1.5, 1];
+if ~exist('size_idx', 'var'), size_idx = 1:numel(sizes); end
 
-addpath(genpath('./'))
+for idx = size_idx
+Hmax = sizes(idx);
+
+% table that contains the results for this size (saved after every method)
+T = table();
+res_name = sprintf('test_heat_size%d', idx);
+
+% options are reset for every mesh size
+options = [];
 
 tol = 1e-6;
 options.maxmem = 120;
 options.tol = tol;
-options.true_res = 0;
 
 %generate A,E,L
 % mult = @(v) -L\(A*((L')\v)) refers to the transformed Lyapunov
@@ -61,6 +73,7 @@ row.matvecs   = result_compress.iter;
 row.true_res  = result_compress.true_res;
 row.num_poles = result_compress.k;
 T = [T; row];
+save_results(T, results_dir, res_name);
 clear V;
 %%
 
@@ -80,12 +93,13 @@ result_two_pass.true_res = norm(R * Rperm', 'fro') / norm(vec)^2;
 
 row = table();
 row.N         = n;
-row.method    = "two_pass";
+row.method    = "two-pass";
 row.time      = result_two_pass.time;
-row.matvecs   = result_two_pass.iter;
+row.matvecs   = 2*result_two_pass.iter; % first and second pass
 row.true_res  = result_two_pass.true_res;
 row.num_poles = result_two_pass.k;
 T = [T; row];
+save_results(T, results_dir, res_name);
 clear V;
 %%
 
@@ -124,11 +138,16 @@ row.matvecs   =  matvecs;
 row.true_res  = res_cycle;
 row.num_poles = n_poles;
 T = [T; row];
+save_results(T, results_dir, res_name);
 clear V;
 end
 
 end
 
 %%
+
+
+% results for this size
+disp(T);
 
 end

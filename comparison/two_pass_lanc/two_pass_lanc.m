@@ -43,7 +43,7 @@ elseif isfield(options, 'maxmem') == 0
         error("Please provide maximum memory \n")
 
 elseif isfield(options, 'xi') == 0 && (isfield(options, 'eigmin') == 0 || isfield(options, 'eigmax') == 0)
-    % if the poles are not provided and at leat one of the extreme eigevalues are not
+    % if the poles are not provided and at least one of the extreme eigenvalues is not
     % provided, the first pass is performed employing full orthogonalization to estimate the eigenvalues
     flag = 1;
     if isfield(options, 'eigmax') == 1
@@ -67,6 +67,9 @@ elseif isfield(options, 'xi') == 0 && (isfield(options, 'eigmin') == 0 || isfiel
         options.eigmin = options.eigmin / 10;
         options.eigmax = options.eigmax * 1.1;
     end
+    if ~(isreal(options.eigmin) && options.eigmin > 0 && options.eigmax > options.eigmin)
+        error("The estimation of the extreme eigenvalues of A failed (e.g., because the Krylov subspace is invariant); please provide options.eigmin and options.eigmax")
+    end
     c0 = options.eigmax/options.eigmin;
     options.xi = poles_Zolotarev(options.eigmin, options.eigmax, options.tol/(c0 * 2));
 elseif isfield(options, 'xi') == 0
@@ -76,8 +79,8 @@ end
 
 
 k = length(options.xi);
-if options.maxmem < 2*k
-    error("The variable maxmem is too low to achieve the requested accuracy, please provide maxmem which is at least %d \n", 2*k+1)
+if options.maxmem < 2*k+2
+    error("The variable maxmem is too low to achieve the requested accuracy, please provide maxmem which is at least %d \n", 2*k+2)
 else 
     fprintf("Residual norm is checked every %d Lanczos iterations \n", options.maxmem - 2*k -1)
 end

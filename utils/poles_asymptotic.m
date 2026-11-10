@@ -29,8 +29,13 @@ for ii = 1:m_zol
    xi(ii) = vpa(subs(-x*dn, b), 32);
    xi(ii) = double(real(xi(ii)));
    if xi(ii) > -a
-       random = rand(1);
-       xi(ii) = xi(ii-1) * random - a * (1 - random); % cannot be computed exactly
+       % the asymptotic expansion is not accurate enough: the pole is placed
+       % (deterministically) between the previous pole and -a
+       if ii == 1
+           xi(ii) = -a;
+       else
+           xi(ii) = (xi(ii-1) - a)/2;
+       end
    end
 
 end

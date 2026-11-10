@@ -18,14 +18,14 @@ h_conv_ext = 750 /1e6;         % convection coefficient [W/(mm²·K)]
 %specify heat equation
 specifyCoefficients(model, 'm', 0, 'd', rho*cp, 'c', lambda, 'a', 0, 'f', 0);
 
-%apply bounday condition: uniform convection
+%apply boundary condition: uniform convection
 applyBoundaryCondition(model, 'neumann', 'Face', 1:model.Geometry.NumFaces, 'q', h_conv_ext, 'g', 0);
 
 
 %Hmax = 2; 
 Hmax_faces = Hmax / 2;
 
-%generate mesg, more refined on internal faces of holes
+%generate mesh, more refined on internal faces of holes
 generateMesh(model, ...
     'Hmax', Hmax, ...
     'Hface', {faces, Hmax_faces}, ...
@@ -42,7 +42,7 @@ M_fem = (FEM.M + FEM.M') / 2;
 E = spdiags(sum(M_fem, 2),0,N,N); 
 L = chol(E, 'lower');
 
-%c represent heat input on internal faces of the two holes
+%c represents heat input on internal faces of the two holes
 nodes_input = findNodes(model.Mesh, 'region', 'Face', faces);
 c = zeros(N, 1);
 e_diag = diag(E);                         

@@ -158,6 +158,7 @@ function [U, Y, matvecs, n_poles] = lyap_ratkrylov_cycle(A, E, L, c, poles, tol,
         u2 = s_curr * u_next - g;
         u1_coeff = (Hm') \ (em * h_next);
         u1 = Um * (Ym * u1_coeff);
+        clear Um;
 
         [~, S_mat] = qr([u1, u2], 0);
         J = [0, 1; 1, 0];

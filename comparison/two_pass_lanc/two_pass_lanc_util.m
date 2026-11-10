@@ -1,6 +1,5 @@
 function [QU, Y, iter,k,m,errest] = two_pass_lanc_util(mult,c,normc,options, v1, v2, alphain, betain, H) 
 
-
 tol = options.tol;
 xi = options.xi;
 m = options.m;
@@ -17,7 +16,7 @@ options.isreal = 1;
 % extreme eigenvalues are provided, the first pass is performed without
 % full orthogonalization
 if nargin < 5
-    [~, v1, v2, alpha, beta] = generate_Q(mult, itin, zeros(n,1), c/normc, 0);
+    [v1, v2, alpha, beta] = lanczos_coefficients(mult, itin, zeros(n,1), c/normc, 0);
 else
     alpha = alphain;
     beta = betain;
@@ -56,7 +55,7 @@ while iter + m < n
     last_beta = beta(end);
 
     % extend the basis
-    [~, v1, v2, alpha, beta] = generate_Q(mult, m, v1, v2, beta(end));
+    [v1, v2, alpha, beta] = lanczos_coefficients(mult, m, v1, v2, beta(end));
 
     That = spdiags([[beta((1:(m-1)));0],alpha, [0;beta((1:(m-1)))]], -1:1, m,m);
     
@@ -86,39 +85,71 @@ while iter + m < n
         break
     end
 end
+end
 
-% retrive all the alpha and beta coefficients
+% retrieve all the alpha and beta coefficients
 last_beta = beta(end);
 alpha = full(diag(T));
 beta = full(diag(T, -1));
 beta = [beta;last_beta];
 
 
-QU = 0;
-itin = m+2*k;
-it = m+k;
-s = floor((iter-itin)/it)+1;
-
-% perform the second Lanczos pass generating m + k vectorts at a time
-for j = 1:s 
-    if j == 1
-        if nargin < 5
-            [Q, v1, v2, ~, ~] = generate_Q(mult, itin, zeros(n,1), c/normc, 0, beta(1:itin), alpha(1:itin));
-        else
-            % if the first pass was computed with full orth, then full orth is employed again
-            [Q, v1, v2, ~] = full_orth_Arnoldi(mult, itin, c/normc, H);
-        end
-        QU = QU + Q * U(1:itin, :);
-    else
-        [Q, v1, v2, ~, ~] = generate_Q(mult, it, v1, v2, beta(itin + (j-2)*it), beta(itin + (j-2)*it + 1 : (itin + (j-1)*it)), alpha(itin + (j-2)*it + 1 : itin + (j-1)*it));
-        QU = QU + Q * U(itin + (j-2)*it + 1 : itin + (j-1)*it, :);
+% second Lanczos pass: the Lanczos vectors are recomputed (using the stored
+% coefficients alpha, beta) in blocks of it = m + k vectors, stored in the 
+% last m + k columns of B; QU is accumulated in the first k columns of B
+kk = size(U,2);
+it = m + k;
+bs = 4096; % number of rows per block in the in-place updates
+if nargin < 5
+    B = zeros(n, kk + it);
+    start = 1;
+    v1 = zeros(n,1);
+    v2 = c/normc;
+    b = 0;
+else
+    % if the first m + 2k iterations were computed with full orthogonalization,
+    % they are recomputed with full orthogonalization (all these vectors are needed)
+    [B, v1, v2, ~] = full_orth_Arnoldi(mult, itin, c/normc, H);
+    for i = 1:bs:n
+        rows = i:min(i+bs-1, n);
+        B(rows, 1:kk) = B(rows, :) * U(1:itin, :);
     end
-    
+    start = itin + 1;
+    b = beta(itin);
 end
 
-if iter - (s-1) * it - itin> 0
-    [Q,~,~,~,~] = generate_Q(mult, iter - (s-1)*it-itin, v1, v2, beta(itin + (s-1)*it), beta(itin + (s-1)*it + 1 : end), alpha(itin + (s-1)*it + 1 : end));
-    QU = QU + Q * U((s-1)*it + itin + 1:end, :);
+while start <= iter
+    stop = min(start + it - 1, iter);
+    len = stop - start + 1;
+    for i = 1:len
+        B(:, kk+i) = v2;
+        v = short_recurrence_Lanczos(mult, v1, v2, b, beta(start+i-1), alpha(start+i-1));
+        b = beta(start+i-1);
+        v1 = v2;
+        v2 = v;
+    end
+    for i = 1:bs:n
+        rows = i:min(i+bs-1, n);
+        B(rows, 1:kk) = B(rows, 1:kk) + B(rows, kk+1:kk+len) * U(start:stop, :);
+    end
+    start = stop + 1;
 end
 
+QU = B(:, 1:kk);
+
+end
+
+
+function [v1, v2, alpha, beta] = lanczos_coefficients(mult, m, v1, v2, b)
+% m Lanczos iterations (short recurrence) starting from the last two Lanczos
+% vectors v1, v2 and the last beta coefficient b; only the coefficients and
+% the last two vectors are returned (the basis is not stored)
+alpha = zeros(m,1);
+beta = zeros(m,1);
+for i = 1:m
+    [v, alpha(i), beta(i)] = short_recurrence_Lanczos(mult, v1, v2, b);
+    b = beta(i);
+    v1 = v2;
+    v2 = v;
+end
 end

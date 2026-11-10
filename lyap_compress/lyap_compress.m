@@ -1,6 +1,6 @@
 function [U, X, result] = lyap_compress(A,c,options) 
 %
-% Function to compute an approximation of the solution of the Lyapuov equation 
+% Function to compute an approximation of the solution of the Lyapunov equation 
 %               A * X + X * A = c * c'
 % using the compress algorithm.
 % The approximate solution is returned in a factorized form, i.e. U*X*U'
@@ -13,14 +13,13 @@ function [U, X, result] = lyap_compress(A,c,options)
 %   options.eigmin
 %   options.eigmax      estimates of the extreme eigenvalues of A (optional)
 %   options.maxmem      max number of vectors to keep in memory 
-%   options.true_res    if set to 1, the true residual norm is computed and stored whener the estimate residual norm is computed
 %
 % Outputs:
 %   U, X                matrices to form the approximate solution U*X*U'
 %   result.iter         total number of Lanczos iterations
 %   result.k            number of poles
 %   result.m            set equal to maxmem - 2*k - 1 and indicates how often the compression is performed
-%   result.errest       matrix with 2 columns showing the number of iterations (first column) and the relative estimate of  the residual norm (second column)
+%   result.errest       matrix with 2 columns showing the number of iterations (first column) and the relative estimate of the residual norm (second column)
 %   result.eigmin
 %   result.eigmax       estimates of the extreme eigenvalues of A (or options.eigmin and options.eigmax if provided as inputs)
 %   result.xi           list of poles
@@ -44,7 +43,7 @@ elseif isfield(options, 'maxmem') == 0
         error("Please provide maximum number of vectors to be kept in memory \n")
 
 elseif isfield(options, 'xi') == 0 && (isfield(options, 'eigmin') == 0 || isfield(options, 'eigmax') == 0)
-    % if the poles are not provided and at leat one of the extreme eigevalues are not
+    % if the poles are not provided and at least one of the extreme eigenvalues is not
     % provided, the first pass is performed employing full orthogonalization to estimate the eigenvalues
     flag = 1;
     if isfield(options, 'eigmax') == 1
@@ -68,6 +67,9 @@ elseif isfield(options, 'xi') == 0 && (isfield(options, 'eigmin') == 0 || isfiel
         options.eigmin = options.eigmin /10;
         options.eigmax = options.eigmax * 1.1;
     end
+    if ~(isreal(options.eigmin) && options.eigmin > 0 && options.eigmax > options.eigmin)
+        error("The estimation of the extreme eigenvalues of A failed (e.g., because the Krylov subspace is invariant); please provide options.eigmin and options.eigmax")
+    end
     c0 = options.eigmax/options.eigmin;
     options.xi = poles_Zolotarev(options.eigmin, options.eigmax, options.tol/(c0 * 2));
 elseif isfield(options, 'xi') == 0
@@ -75,13 +77,9 @@ elseif isfield(options, 'xi') == 0
     options.xi = poles_Zolotarev(options.eigmin, options.eigmax, options.tol/(c0 * 2));
 end
 
-if isfield(options, 'true_res') == 0
-    options.true_res = 0;
-end
-
 k = length(options.xi);
-if options.maxmem <= 2*k
-    error("The variable maxmem is too low to achieve the requested accuracy, please provide maxmem which is at least %d \n", 2*k+1)
+if options.maxmem < 2*k+2
+    error("The variable maxmem is too low to achieve the requested accuracy, please provide maxmem which is at least %d \n", 2*k+2)
 elseif options.maxmem < (3*k-1) % if compression is too frequent, compress algorithm may suffer
     warning("Compression is performed every %d Lanczos iterations, please consider increasing maxmem \n", options.maxmem - 2*k-1)
 else 

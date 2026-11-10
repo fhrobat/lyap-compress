@@ -10,52 +10,38 @@ function [Q, v1, v2, alpha, beta] = generate_Q(mult, m, v1, v2, b, beta, alpha)
 %   b               last beta coefficient
 %   beta, alpha     beta and alpha coefficients if already known (optional)
 %
-if nargin < 6
-    sz = size(v1,1);
-    Q = zeros(sz, m);
-    Q(:,1) = v2;
+% Outputs:
+%   Q               the m new basis vectors (the first one is v2)
+%   v1, v2          last vector of Q and next Lanczos vector
+%   alpha, beta     Lanczos coefficients (beta(m) couples the last vector of Q and the next vector)
+%
+known = (nargin >= 6);
+sz = size(v1,1);
+Q = zeros(sz, m);
+Q(:,1) = v2;
+if ~known
     beta = zeros(m,1);
     alpha = zeros(m,1);
+end
 
-    for i = 1:m
-        if i == 1
-            [Q(:, i+1), alpha(i), beta(i)] = short_recurrence_Lanczos(mult, v1, v2, b);
-            v1 = v2;
-            v2 = Q(:, i+1);
-
-        elseif i < m
-            [Q(:, i+1), alpha(i), beta(i)] = short_recurrence_Lanczos(mult, v1, v2, beta(i-1));
-            v1 = v2;
-            v2 = Q(:, i+1);
-        else
-            [v, alpha(i), beta(i)] = short_recurrence_Lanczos(mult, v1, v2, beta(i-1));
-            v1 = v2;
-            v2 = v;
-
-        end
-
+for i = 1:m
+    % beta coefficient coupling v1 and v2
+    if i == 1
+        b_prev = b;
+    else
+        b_prev = beta(i-1);
     end
-else
-    sz = size(v1,1);
-    Q = zeros(sz, m);
-    Q(:,1) = v2;
 
-    for i = 1:m
-        if i == 1
-            Q(:, i+1) = short_recurrence_Lanczos(mult, v1, v2, b, beta(1), alpha(1));
-            v1 = v2;
-            v2 = Q(:, i+1);
-        elseif i < m
-            Q(:, i+1) = short_recurrence_Lanczos(mult, v1, v2, beta(i-1), beta(i), alpha(i));
-            v1 = v2;
-            v2 = Q(:, i+1);
-        else
-            v = short_recurrence_Lanczos(mult, v1, v2, beta(i-1), beta(i), alpha(i));
-            v1 = v2;
-            v2 = v;
+    if known
+        v = short_recurrence_Lanczos(mult, v1, v2, b_prev, beta(i), alpha(i));
+    else
+        [v, alpha(i), beta(i)] = short_recurrence_Lanczos(mult, v1, v2, b_prev);
+    end
+    v1 = v2;
+    v2 = v;
 
-        end
-
+    if i < m
+        Q(:, i+1) = v;
     end
 end
 
