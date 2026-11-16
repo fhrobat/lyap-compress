@@ -23,7 +23,7 @@ If `options.eigmin` and `options.eigmax` are not provided, they are estimated fr
 This repository additionally contains the MATLAB code to reproduce the numerical experiments in [1]:
 
 * ```test_2DLap.m```: 2D Laplacian (Section 5.1)
-* ```test_2DLap_sensitivity.m```: sensitivity to the approximation of the smallest eigenvalue (Section 5.1, sensitivity figures)
+* ```test_2DLap_sensitivity.m```: sensitivity to the approximation of the smallest eigenvalue (Online Resource 1, the supplementary material of [1])
 * ```test_3DLap.m```: 3D Laplacian (Section 5.2)
 * ```test_fenics_rail.m```: FEniCS Rail example (heat diffusion in 2D, Section 5.3)
 * ```test_heat.m```: heat diffusion in a steel bracket (heat diffusion in 3D, Section 5.4)
